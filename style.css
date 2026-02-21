@@ -1,0 +1,197 @@
+:root{
+  --bg:#0f0f0f;
+  --glass: rgba(255,255,255,0.03);
+  --neon-blue: #00e5ff;
+  --neon-pink: #ff4dd2;
+  --muted: rgba(255,255,255,0.65);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:linear-gradient(180deg,#0b0b0b 0%, #0f0f0f 100%);
+  color:#fff;
+  font-family:Inter,system-ui,Segoe UI,Arial;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Subtle animated background glow */
+body::before{
+  content:'';
+  position:fixed;
+  left:50%; top:10%;
+  width:800px; height:800px; transform:translateX(-50%);
+  background:radial-gradient(circle at 20% 20%, rgba(0,229,255,0.06), transparent 20%), radial-gradient(circle at 80% 80%, rgba(255,77,210,0.04), transparent 25%);
+  pointer-events:none; z-index:0; filter:blur(28px); opacity:0.95; animation:bgFloat 12s ease-in-out infinite;
+}
+@keyframes bgFloat{0%{transform:translateX(-52%) translateY(0)}50%{transform:translateX(-48%) translateY(6px)}100%{transform:translateX(-52%) translateY(0)}}
+
+/* Page fade-in */
+.page-fade{animation:pageFade .7s ease both}
+@keyframes pageFade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+.glass{background:linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.015)); backdrop-filter: blur(10px) saturate(120%); border:1px solid rgba(255,255,255,0.06); border-radius:12px; box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 18px rgba(0,229,255,0.02);}
+.glass-nav{background:linear-gradient(90deg, rgba(10,10,10,0.75), rgba(10,10,10,0.25)); padding:0.6rem 1rem; position:sticky; top:0; z-index:1020}
+.navbar-brand{font-family:Orbitron, sans-serif; letter-spacing:0.6px}
+
+.neon-logo{color:var(--neon-blue); text-shadow:0 0 12px rgba(0,229,255,0.16)}
+.neon-text{color:var(--neon-blue); text-shadow:0 0 10px rgba(0,229,255,0.08)}
+.neon-blue{color:var(--neon-blue); text-shadow:0 0 10px rgba(0,229,255,0.18); font-weight:700}
+.neon-pink{color:var(--neon-pink)}
+
+/* Navbar glow */
+.nav-glow{position:relative; transition:all .22s ease}
+.nav-glow{padding:6px 8px}
+.nav-glow::after{content:''; position:absolute; left:8px; right:8px; bottom:-2px; height:2px; background:linear-gradient(90deg,var(--neon-blue),var(--neon-pink)); transform:scaleX(0); transform-origin:left; transition:transform .28s cubic-bezier(.2,.9,.2,1); opacity:0.9}
+.nav-glow:hover{color:var(--neon-pink); text-shadow:0 0 14px rgba(255,77,210,0.22)}
+.nav-glow:hover::after{transform:scaleX(1)}
+.nav-glow.active{color:var(--neon-blue); transform:none}
+
+/* loader */
+.loader{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg, rgba(10,10,10,0.95), rgba(5,5,5,0.9)); z-index:9999}
+.loader-content{padding:28px 36px; text-align:center; border-radius:12px}
+.loader h2{margin:0 0 8px; font-family:Orbitron, sans-serif; color:var(--neon-blue)}
+.loader-dot-row{margin-top:14px}
+.dot{display:inline-block; width:8px; height:8px; margin:0 4px; background:var(--neon-pink); border-radius:50%; opacity:.9; animation:blink 1s infinite}
+@keyframes blink{0%{transform:translateY(0); opacity:0.2}50%{transform:translateY(-6px); opacity:1}100%{transform:translateY(0); opacity:0.2}}
+.fade-out{animation:loaderFade .6s ease both}
+@keyframes loaderFade{from{opacity:1} to{opacity:0; transform:translateY(-8px)}}
+
+.content-hidden{opacity:0}
+
+/* Cards slide up */
+.card-anim{animation:cardUp .6s cubic-bezier(.2,.9,.3,1) both}
+@keyframes cardUp{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none}}
+.card:hover{transform:translateY(-6px) scale(1.02)}
+.stats-card{min-height:90px}
+
+/* Stat card title and value styling */
+.stats-card .card-title{color:rgba(255,255,255,0.88); font-weight:700}
+/* Ensure any .text-muted inside stat cards is brighter for readability */
+.stats-card .card-title.text-muted{color:rgba(255,255,255,0.78) !important}
+/* stat value: brighter, larger, neon glow and responsive */
+.stats-card .stat-value{font-size:clamp(1.6rem, 4.5vw, 2.6rem); margin:0; font-weight:900; line-height:1; white-space:nowrap; display:inline-block}
+.stats-card .stat-value.neon-blue{color:#eaffff; text-shadow:0 8px 28px rgba(0,0,0,0.6), 0 0 36px rgba(0,229,255,0.30), 0 0 10px rgba(0,229,255,0.12)}
+.stats-card .stat-value.neon-pink{color:#ffdff7; text-shadow:0 8px 28px rgba(0,0,0,0.6), 0 0 36px rgba(255,77,210,0.30), 0 0 10px rgba(255,77,210,0.12)}
+
+/* Heat level special styling */
+#heat-level-text.stat-value{font-size:clamp(1.4rem, 3.8vw, 2.2rem); color:#ffdfe6; text-shadow:0 6px 20px rgba(0,0,0,0.5), 0 0 22px rgba(255,77,210,0.22)}
+
+@media (max-width:420px){
+  .stats-card .stat-value{font-size:1.35rem}
+  #heat-level-text.stat-value{font-size:1.2rem}
+}
+
+/* Hover glow on cards */
+.card{transition:transform .22s ease, box-shadow .22s ease}
+.card:hover{box-shadow:0 14px 40px rgba(0,0,0,0.6), 0 0 28px rgba(0,229,255,0.06)}
+
+.live-feed{font-family:Courier,monospace; font-size:0.95rem; max-height:220px; overflow:auto; padding-right:8px}
+.live-feed li{padding:10px 8px; border-bottom:1px dashed rgba(255,255,255,0.03); color:#dbe9f0}
+.live-feed li.new-feed{color:var(--neon-pink); background:linear-gradient(90deg, rgba(255,77,210,0.02), transparent); animation:fadeNew .9s ease}
+@keyframes fadeNew{from{opacity:0; transform:translateY(-6px)} to{opacity:1; transform:none}}
+
+/* auto-scroll visible indicator */
+.live-feed::-webkit-scrollbar{width:8px}
+.live-feed::-webkit-scrollbar-thumb{background:linear-gradient(180deg, rgba(0,229,255,0.12), rgba(255,77,210,0.12)); border-radius:8px}
+
+.alert-box{border:1px solid rgba(255,0,0,0.18); box-shadow:0 0 22px rgba(255,0,0,0.14); background: linear-gradient(90deg, rgba(50,0,0,0.08), rgba(0,0,0,0.02));}
+
+/* Alert glow animation */
+.alert-box.glow{animation:alertGlow 1.2s ease-in-out infinite; border-color: rgba(255,0,0,0.28); box-shadow:0 0 36px rgba(255,0,0,0.28);}
+@keyframes alertGlow{0%{box-shadow:0 0 8px rgba(255,0,0,0.12); transform:translateY(0)}50%{box-shadow:0 0 36px rgba(255,0,0,0.28); transform:translateY(-4px)}100%{box-shadow:0 0 8px rgba(255,0,0,0.12); transform:translateY(0)}}
+
+/* Heat meter */
+.heat-meter{display:flex; align-items:center}
+.heat-meter .dot{width:18px; height:18px; border-radius:50%; box-shadow:0 0 12px rgba(0,0,0,0.4)}
+.heat-meter .dot.medium{background:linear-gradient(90deg,var(--neon-pink),var(--neon-blue)); box-shadow:0 0 18px rgba(255,77,210,0.12), 0 0 20px rgba(0,229,255,0.06)}
+.heat-meter .dot.high{background:linear-gradient(90deg,#ff4d4d,#ff0000); box-shadow:0 0 18px rgba(255,68,68,0.22), 0 0 30px rgba(255,0,0,0.12); animation:heatPulse 1.6s infinite}
+@keyframes heatPulse{0%{transform:scale(1); box-shadow:0 0 10px rgba(255,0,0,0.12)}50%{transform:scale(1.12); box-shadow:0 0 28px rgba(255,0,0,0.22)}100%{transform:scale(1); box-shadow:0 0 10px rgba(255,0,0,0.12)}}
+
+/* Map pulsing markers */
+.pulse-icon{display:block}
+.pulse-marker{position:relative; width:44px; height:44px; transform-origin:center; transition:transform .14s ease}
+.pulse-marker.hover{transform:scale(1.35)}
+.pulse-core{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:18px; height:18px; border-radius:50%; background:var(--marker-color, var(--neon-pink)); box-shadow:0 0 20px var(--marker-color), 0 0 72px rgba(0,0,0,0.18);} 
+.pulse-marker::before{content:''; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:18px; height:18px; border-radius:50%; background:var(--marker-color); opacity:0.14; filter:blur(14px); animation:pulse 2.2s infinite}
+@keyframes pulse{0%{transform:translate(-50%,-50%) scale(0.9); opacity:0.95}50%{transform:translate(-50%,-50%) scale(1.6); opacity:0.5}100%{transform:translate(-50%,-50%) scale(3.2); opacity:0}}
+
+/* user marker and destination styles */
+.user-pulse{width:52px; height:52px; display:block}
+.user-core{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:20px; height:20px; border-radius:50%; background:linear-gradient(90deg,#7efc6a,#00e5ff); box-shadow:0 0 26px rgba(0,229,255,0.18), 0 0 46px rgba(126,252,106,0.12)}
+.user-icon .user-core{width:18px; height:18px}
+.dest-core{width:16px; height:16px; border-radius:50%; background:linear-gradient(90deg,#ffd166,#ff4dd2); box-shadow:0 0 20px rgba(255,77,210,0.18), 0 0 40px rgba(255,209,102,0.12)}
+
+/* Neon route line styling for polylines (SVG) */
+.leaflet-overlay-pane svg .route-line,
+.leaflet-overlay-pane svg .leaflet-polyline.route-line {
+  stroke: var(--neon-blue);
+  stroke-width: 8px;
+  stroke-linecap: round;
+  stroke-opacity: 1;
+  filter: drop-shadow(0 0 12px rgba(0,229,255,0.45));
+}
+
+/* animated dash effect for route */
+@keyframes dashMove { to { stroke-dashoffset: -40; } }
+.route-animated { stroke-dasharray: 16 12; animation: dashMove 1s linear infinite; }
+
+/* leaflet-routing-machine route glow override */
+.leaflet-routing-container{display:none}
+.leaflet-routing-line{filter:drop-shadow(0 0 12px rgba(0,229,255,0.35))}
+
+
+/* small responsive tweaks */
+@media (max-width:768px){
+  .navbar-brand{font-size:1rem}
+  .neon-text{font-size:1.1rem}
+}
+
+/* Map fade-in */
+.map-fade{animation:mapFade .9s ease both}
+@keyframes mapFade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+/* minimal link styling */
+a{color:var(--neon-blue)}
+
+/* feed console wrapper */
+.feed-console{background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(10,10,10,0.35)); border:1px solid rgba(255,255,255,0.03); padding:8px;}
+.feed-console .live-feed li{font-family:Courier,monospace; font-size:0.92rem}
+
+/* Stylized game map styles */
+.map-card{padding:0; overflow:hidden}
+.map-svg-wrapper{background:#0b0b0b; border-radius:10px; position:relative; width:100%; height:420px; display:block;}
+.map-svg-wrapper svg{width:100%; height:100%; display:block}
+.map-road{fill:none; stroke:rgba(255,255,255,0.12); stroke-width:2}
+.map-highway{stroke:rgba(255,255,255,0.18); stroke-width:3}
+.map-minor{stroke:rgba(255,255,255,0.08); stroke-width:1}
+.map-district{fill:none; stroke:rgba(255,255,255,0.04); stroke-dasharray:6 6}
+
+.map-marker{cursor:pointer; transition:transform .12s ease, filter .12s ease}
+.map-marker .core{r:6}
+.map-marker.shop .core{fill:#ffd166; stroke:rgba(255,209,102,0.18)}
+.map-marker.mission .core{fill:#ff4dd2; stroke:rgba(255,77,210,0.18)}
+.map-marker.house .core{fill:#7efc6a; stroke:rgba(126,252,106,0.12)}
+.map-marker.business .core{fill:#4dd0ff; stroke:rgba(77,208,255,0.12)}
+.map-marker:hover{transform:scale(1.25)}
+.map-marker .halo{fill:none; stroke-width:10; stroke-opacity:0.06}
+
+.map-tooltip{position:absolute; pointer-events:none; background:linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.9)); color:#fff; padding:6px 10px; border-radius:6px; font-size:0. nine rem; box-shadow:0 6px 18px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.04); transform:translate(-50%, -120%); white-space:nowrap; z-index:1050; opacity:0; transition:opacity .12s ease, transform .12s ease}
+.map-tooltip.visible{opacity:1}
+
+/* make sure map svg doesn't interfere with page selection while panning */
+.map-svg-wrapper.dragging{cursor:grabbing}
+
+
+.stats-card .card-title{
+  color:#b8f7ff;
+  font-weight:600;
+  letter-spacing:1px;
+}
+
+.stats-card h3{
+  font-size:2rem;
+  font-weight:700;
+  text-shadow:0 0 10px rgba(0,229,255,0.5);
+}

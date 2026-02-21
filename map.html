@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crime Territory Map</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css"
+    />
+    <link href="style.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="page-fade">
+    <nav class="navbar navbar-expand-lg navbar-dark glass-nav shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand neon-logo" href="#">Los Santos Ops</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navmenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navmenu">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link nav-glow" href="dashboard.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-glow active" href="map.html">Map</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mt-4">
+      <h1 class="display-6 neon-text mb-3">Crime Territory Map</h1>
+      <div
+        id="map"
+        class="map-fade shadow-lg"
+        style="
+          height: 500px;
+          width: 100%;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        "
+      ></div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
+    <script>
+      // initialize map
+      const map = L.map("map", {
+        zoomAnimation: true,
+        zoomSnap: 0.25,
+        wheelPxPerZoomLevel: 60,
+        inertia: true,
+      }).setView([34.0522, -118.2437], 11);
+
+      // Dark themed Carto tiles
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+        {
+          maxZoom: 19,
+          attribution: "&copy; OpenStreetMap &copy; CARTO",
+          subdomains: "abcd",
+        },
+      ).addTo(map);
+
+      // Pulsing marker using divIcon (preserve existing behavior)
+      function createPulse(lat, lng, title) {
+        const html =
+          '<div class="pulse-marker"><div class="pulse-core"></div></div>';
+        const icon = L.divIcon({
+          className: "pulse-icon",
+          html: html,
+          iconSize: [44, 44],
+          iconAnchor: [22, 22],
+        });
+        const m = L.marker([lat, lng], { icon: icon }).addTo(map);
+        m.bindPopup("<strong>" + title + "</strong>");
+        return m;
+      }
+
+      // keep existing crime markers
+      createPulse(34.05, -118.24, "Downtown Operation");
+      createPulse(34.1, -118.3, "Vinewood Territory");
+      createPulse(33.94, -118.4, "Airport Smuggling");
+      createPulse(34.02, -118.45, "Dockyard Trade");
+
+      // --- Geolocation and routing ---
+      let userMarker = null;
+      let userLatLng = null;
+      let routingControl = null;
+      let destMarker = null;
+
+      function addUserMarker(lat, lng) {
+        userLatLng = L.latLng(lat, lng);
+        const html =
+          '<div class="user-pulse"><div class="user-core"></div></div>';
+        const icon = L.divIcon({
+          className: "user-icon",
+          html: html,
+          iconSize: [52, 52],
+          iconAnchor: [26, 26],
+        });
+        if (userMarker) {
+          userMarker.setLatLng(userLatLng);
+        } else {
+          userMarker = L.marker(userLatLng, { icon: icon })
+            .addTo(map)
+            .bindPopup("You are here");
+        }
+        map.setView(userLatLng, 13, { animate: true });
+      }
+
+      function locateUser() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (pos) {
+              addUserMarker(pos.coords.latitude, pos.coords.longitude);
+            },
+            function (err) {
+              console.warn("Geolocation error:", err.message);
+              // fallback to default
+              addUserMarker(34.0522, -118.2437);
+            },
+            { enableHighAccuracy: true, timeout: 7000 },
+          );
+        } else {
+          addUserMarker(34.0522, -118.2437);
+        }
+      }
+
+      // click to set destination and route
+      map.on("click", function (e) {
+        if (!userLatLng) {
+          alert("Waiting for location...");
+          return;
+        }
+        const dest = e.latlng;
+
+        // remove previous destination marker
+        if (destMarker) map.removeLayer(destMarker);
+        destMarker = L.marker(dest, {
+          icon: L.divIcon({
+            className: "dest-icon",
+            html: '<div class="dest-core"></div>',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+          }),
+        })
+          .addTo(map)
+          .bindPopup("Destination")
+          .openPopup();
+
+        // create or update routing control using OSRM via L.Routing
+        if (routingControl) {
+          routingControl.setWaypoints([userLatLng, dest]);
+        } else {
+          routingControl = L.Routing.control({
+            waypoints: [userLatLng, dest],
+            router: L.Routing.osrmv1({
+              serviceUrl: "https://router.project-osrm.org/route/v1",
+            }),
+            lineOptions: {
+              styles: [
+                { color: "#00e5ff", weight: 8, opacity: 1 },
+                { color: "#00e5ff", weight: 16, opacity: 0.25 },
+              ],
+            },
+            createMarker: function () {
+              return null;
+            },
+            addWaypoints: false,
+            routeWhileDragging: false,
+            show: false,
+          }).addTo(map);
+        }
+      });
+
+      // initialize geolocation immediately
+      locateUser();
+    </script>
+  </body>
+</html>

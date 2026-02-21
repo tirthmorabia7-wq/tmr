@@ -1,0 +1,12 @@
+{
+  "prompt": "A dramatic deep-space scene centered on a glowing black hole / energy vortex, a portal-like gravitational field pulling surrounding stardust inward. Swirling cosmic clouds and nebula dust in electric blue and deep purple, high-contrast dark space tones, volumetric glow and cinematic light rays, glowing light streaks and particles radiating outward, subtle galaxy textures and realistic starfields, ultradetailed surface and dust structure, motion and depth with soft god-rays and particle bokeh, ultra-realistic NASA-style astrophotography blended with cinematic sci-fi digital art, photorealistic rendering, sharp focus, volumetric scattering, dramatic rim-lighting, 16:9 composition, ultra high detail, cinematic color grading.",
+  "negative_prompt": "lowres, bad anatomy, deformed, watermark, text, logo, blurry, oversaturated, cartoon, flat lighting, banding, jpeg artifacts, out of focus, noise, posterized",
+  "sampler_name": "DPM++ 2M Karras",
+  "steps": 36,
+  "cfg_scale": 7,
+  "width": 3840,
+  "height": 2160,
+  "seed": -1,
+  "batch_size": 1,
+  "enable_hr": false
+}
