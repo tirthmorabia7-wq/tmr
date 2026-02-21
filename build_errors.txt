@@ -1,0 +1,104 @@
+﻿[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+node.exe : Found 1 warning 
+while optimizing generated 
+CSS:
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (Found 1  
+   warning... generated CS   
+ S::String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+
+[2mΓöé   }[22m
+[2mΓöé }[22m
+[2mΓöé[22m @import url('htt
+ps://fonts.googleapis.com/css
+2?family=Rajdhani:wght@300;40
+0;500;600;700&family=Orbitron
+:wght@400;500;600;700;800;900
+&family=Share+Tech+Mono&displ
+ay=swap');
+[2mΓöå[22m        
+[33m[2m^--[22m @import 
+rules must precede all rules 
+aside from @charset and 
+@layer statements[39m
+[2mΓöå[22m
+[2mΓöé :root {[22m
+[2mΓöé   --neon-green: 
+#00ff88;[22m
+
+[32mΓ£ô[39m 231 modules transformed.
+[31mΓ£ù[39m Build failed 
+in 867ms
+[31merror during build:
+[31m[vite]: Rollup failed 
+to resolve import "react-is" 
+from "C:/Users/raman/OneDrive
+/Desktop/noob/node_modules/re
+charts/es6/util/ReactUtils.js
+".
+This is most likely 
+unintended because it can 
+break your application at 
+runtime.
+If you do want to 
+externalize this module 
+explicitly add it to
+`build.rollupOptions.external
+`[31m
+    at viteLog (file:///C:/Us
+ers/raman/OneDrive/Desktop/no
+ob/node_modules/vite/dist/nod
+e/chunks/config.js:33635:57)
+    at file:///C:/Users/raman
+/OneDrive/Desktop/noob/node_m
+odules/vite/dist/node/chunks/
+config.js:33669:73
+    at onwarn (file:///C:/Use
+rs/raman/OneDrive/Desktop/noo
+b/node_modules/@vitejs/plugin
+-react/dist/index.js:76:7)
+    at file:///C:/Users/raman
+/OneDrive/Desktop/noob/node_m
+odules/vite/dist/node/chunks/
+config.js:33669:28
+    at onRollupLog (file:///C
+:/Users/raman/OneDrive/Deskto
+p/noob/node_modules/vite/dist
+/node/chunks/config.js:33664:
+63)
+    at onLog (file:///C:/User
+s/raman/OneDrive/Desktop/noob
+/node_modules/vite/dist/node/
+chunks/config.js:33467:4)
+    at file:///C:/Users/raman
+/OneDrive/Desktop/noob/node_m
+odules/rollup/dist/es/shared/
+node-entry.js:20958:32
+    at Object.logger [as 
+onLog] (file:///C:/Users/rama
+n/OneDrive/Desktop/noob/node_
+modules/rollup/dist/es/shared
+/node-entry.js:22945:9)
+    at ModuleLoader.handleInv
+alidResolvedId (file:///C:/Us
+ers/raman/OneDrive/Desktop/no
+ob/node_modules/rollup/dist/e
+s/shared/node-entry.js:21689:
+26)
+    at file:///C:/Users/raman
+/OneDrive/Desktop/noob/node_m
+odules/rollup/dist/es/shared/
+node-entry.js:21647:26[39m
